@@ -8,7 +8,7 @@ export const useData = () => {
 
 export const DataProvider = ({ children }) => {
 
-    
+
     const [groups, setGroups] = useState([]);
 
     const [name, setName] = useState("");
@@ -16,7 +16,7 @@ export const DataProvider = ({ children }) => {
 
     const getName = async () => {
         try {
-            const response = await fetch("http://localhost:5000/dashboard", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/dashboard", {
                 method: "GET",
                 headers: { token: localStorage.token }
             });

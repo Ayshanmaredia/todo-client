@@ -73,7 +73,7 @@ const List = () => {
             }
         }))
     }
-    
+
     const editList = (e, id) => {
         setSelectedId(id);
         setLists(lists.map((list) => {
@@ -99,7 +99,7 @@ const List = () => {
         try {
             const body = { "name": list.name, "owner_type": selectedOwner.owner_type, "owner_type_id": selectedOwner.owner_type_id, "description": null, "status": 0 }
 
-            const response = await fetch("http://localhost:5000/list/create-list", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/create-list", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
@@ -125,7 +125,7 @@ const List = () => {
 
     const getList = async () => {
         try {
-            const response = await fetch("http://localhost:5000/list/get-lists", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/get-lists", {
                 method: "GET",
                 headers: { "owner_type": selectedOwner.owner_type, "owner_type_id": selectedOwner.owner_type_id, token: localStorage.token }
             });
@@ -146,7 +146,7 @@ const List = () => {
         const body = { "id": listItem.id, "name": listItem.name, "description": listItem.description, "status": listItem.status }
 
         try {
-            const response = await fetch("http://localhost:5000/list/update-list", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/update-list", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
@@ -168,7 +168,7 @@ const List = () => {
 
     const deleteList = async (id) => {
         try {
-            const response = await fetch("http://localhost:5000/list/delete-list", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/delete-list", {
                 method: "DELETE",
                 headers: { "id": id, token: localStorage.token }
             });

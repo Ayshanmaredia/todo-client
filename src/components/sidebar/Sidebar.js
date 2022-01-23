@@ -87,7 +87,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     const getGroups = async () => {
 
         try {
-            const response = await fetch("http://localhost:5000/group/get-groups", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/group/get-groups", {
                 method: "GET",
                 headers: { token: localStorage.token }
             });

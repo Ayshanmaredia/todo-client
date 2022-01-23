@@ -15,7 +15,7 @@ const Invite = () => {
         const inviteToken = new URLSearchParams(search).get('inviteToken')
 
         try {
-            const response = await fetch("http://localhost:5000/invite", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite", {
                 method: "POST",
                 headers: { invitetoken: inviteToken }
             })

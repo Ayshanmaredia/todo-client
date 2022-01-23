@@ -44,7 +44,7 @@ const NavBar = () => {
         const body = { "id": selectedOwner.owner_type_id, "name": groupName }
 
         try {
-            const response = await fetch("http://localhost:5000/group/update-group", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/group/update-group", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
@@ -72,7 +72,7 @@ const NavBar = () => {
 
             const body = { "id": id }
 
-            const response = await fetch("http://localhost:5000/group/delete-group", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/group/delete-group", {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
