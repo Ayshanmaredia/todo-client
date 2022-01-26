@@ -11,6 +11,16 @@ const ListContainer = styled.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    height: '100%'
+})
+
+const ListWrapper = styled.div({
+    height: 'calc(100% - 56px)',
+    width: '100%',
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
 })
 
 const List = () => {
@@ -38,14 +48,14 @@ const List = () => {
 
     const addList = () => {
         const list_id = Math.floor(Math.random() * 100);
-        setLists([...lists, {
+        setLists([{
             id: list_id,
             name: "",
             owner_type: 0,
             description: "",
             status: 0,
             isEditing: true
-        }]);
+        }, ...lists]);
     }
 
     useEffect(() => {
@@ -188,19 +198,21 @@ const List = () => {
     return (
         <ListContainer>
             <NavBar />
-            {
-                lists.map((listItem, index) => (
-                    <ListItem key={index}
-                        listItem={listItem}
-                        onKeyPress={onKeyPress}
-                        onBlur={onBlur}
-                        handleShow={handleShow}
-                        setSelectedListItem={setSelectedListItem}
-                        updateList={updateList}
-                    />
-                ))
-            }
-            <Button variant="primary" onClick={handleClick}>Add an item</Button>
+            <ListWrapper>
+                <Button variant="primary" onClick={handleClick}>Add an item</Button>
+                {
+                    lists.map((listItem, index) => (
+                        <ListItem key={index}
+                            listItem={listItem}
+                            onKeyPress={onKeyPress}
+                            onBlur={onBlur}
+                            handleShow={handleShow}
+                            setSelectedListItem={setSelectedListItem}
+                            updateList={updateList}
+                        />
+                    ))
+                }
+            </ListWrapper>
 
             <ListModal
                 show={show}

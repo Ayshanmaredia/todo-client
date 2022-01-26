@@ -12,6 +12,9 @@ export const DataProvider = ({ children }) => {
     const [groups, setGroups] = useState([]);
 
     const [name, setName] = useState("");
+
+    const [members, setMembers] = useState([]);
+
     const [selectedOwner, setSelectedOwner] = useState();
 
     const getName = async () => {
@@ -30,7 +33,24 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-    const value = { selectedOwner, setSelectedOwner, getName, name, groups, setGroups };
+    const groupMembersName = async () => {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/member/get-members", {
+                method: "GET",
+                headers: { group_id: selectedOwner.owner_type_id, token: localStorage.token }
+            });
+
+            const parseRes = await response.json();
+
+            setMembers(parseRes);
+
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
+
+    const value = { selectedOwner, setSelectedOwner, getName, name, groups, setGroups, members, setMembers, groupMembersName };
 
     return (
         <DataContext.Provider value={value}>

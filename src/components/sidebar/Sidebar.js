@@ -14,12 +14,16 @@ const SidebarContainer = styled.div({
 });
 
 const SideBarHeader = styled.div({
-    textAlign: 'center',
-    height: '100px'
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '56px'
 });
 
 const SideBarBody = styled.div({
-    height: 'calc(100% - 140px)'
+    height: 'calc(100% - 106px)',
+    overflowY: 'scroll',
+    scrollBehavior: 'smooth'
 });
 
 const SideBarFooter = styled.div({
@@ -41,6 +45,15 @@ const GroupListHeader = styled.div({
 
 const GroupFontIcon = styled.span({
     margin: '0 5px'
+});
+
+const GroupAddButton = styled(FontAwesomeIcon)({
+    float: 'right',
+    marginTop: '5px',
+    cursor: 'pointer',
+    ":hover": {
+        color: "#0d6efd"
+    }
 });
 
 const SideBarItem = styled.li({
@@ -104,7 +117,6 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
         <SidebarContainer>
             <SideBarHeader>
                 <h4>Listicle Board</h4>
-                <Button variant="primary" onClick={handleShow}>Create Group</Button>
             </SideBarHeader>
             <SideBarBody>
                 <IndividualItem
@@ -117,6 +129,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
                     <GroupListHeader>
                         <GroupFontIcon><FontAwesomeIcon icon="users" /></GroupFontIcon>
                         Groups
+                        <GroupAddButton icon="plus-square" onClick={handleShow} />
                     </GroupListHeader>
                     {groups.map((group, index) => (
                         <GroupItem

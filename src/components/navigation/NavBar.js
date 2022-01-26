@@ -28,6 +28,8 @@ const SettingIcon = styled.span({
 
 const NavBar = () => {
 
+    const [email, setEmail] = useState("");
+
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -51,7 +53,6 @@ const NavBar = () => {
             });
 
             const parseRes = await response.json();
-
 
             setSelectedOwner({ ...selectedOwner, name: parseRes.name })
 
@@ -91,6 +92,24 @@ const NavBar = () => {
         }
     }
 
+    const createInvite = async (e) => {
+
+        const body = { "email": email, "group_id": selectedOwner.owner_type_id }
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", token: localStorage.token },
+                body: JSON.stringify(body)
+            });
+
+            const parseRes = await response.json();
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     return (
         <NavbarContainer bg="light" expand="lg">
             <Container fluid>
@@ -113,12 +132,16 @@ const NavBar = () => {
                         />
                         <Button variant="outline-success">Search</Button>
                     </Form>
-                    <SettingIcon onClick={handleShow}><FontAwesomeIcon icon="cog" /></SettingIcon>
+                    <SettingIcon onClick={handleShow}>
+                        <FontAwesomeIcon icon="cog" />
+                    </SettingIcon>
                     <SettingModal
                         show={show}
                         handleClose={handleClose}
                         updateGroup={updateGroup}
                         deleteGroup={deleteGroup}
+                        createInvite={createInvite}
+                        setEmail={setEmail}
                     />
                 </Navbar.Collapse>
             </Container>

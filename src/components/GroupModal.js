@@ -15,8 +15,12 @@ function GroupModal({ show, handleClose, setGroupName, saveGroup }) {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Enter group name" onChange={(e) => setGroupName(e.target.value)} />
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Control type="text" 
+                        placeholder="Enter group name" 
+                        onChange={(e) => setGroupName(e.target.value)} 
+                        autoComplete="off"
+                        />
                     </Form.Group>
                 </Form>
             </Modal.Body>

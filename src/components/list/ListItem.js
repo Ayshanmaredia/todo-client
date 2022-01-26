@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const CardWrapper = styled(Card)({
     width: '35%',
-    marginBottom: '10px'
+    margin: '5px 0'
 });
 
 const FormElement = styled.div({
