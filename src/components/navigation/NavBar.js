@@ -30,6 +30,8 @@ const NavBar = () => {
 
     const [email, setEmail] = useState("");
 
+    const [invites, setInvites] = useState([]);
+
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -92,7 +94,7 @@ const NavBar = () => {
         }
     }
 
-    const createInvite = async (e) => {
+    const createInvite = async () => {
 
         const body = { "email": email, "group_id": selectedOwner.owner_type_id }
 
@@ -109,6 +111,24 @@ const NavBar = () => {
             console.error(err.message);
         }
     }
+
+    const getInvite = async () => {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/get-invite", {
+                method: "GET",
+                headers: { "group_id": selectedOwner.owner_type_id, token: localStorage.token }
+            });
+
+            const parseRes = await response.json();
+
+            setInvites(parseRes);
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
 
     return (
         <NavbarContainer bg="light" expand="lg">
@@ -142,6 +162,8 @@ const NavBar = () => {
                         deleteGroup={deleteGroup}
                         createInvite={createInvite}
                         setEmail={setEmail}
+                        getInvite={getInvite}
+                        invites={invites}
                     />
                 </Navbar.Collapse>
             </Container>

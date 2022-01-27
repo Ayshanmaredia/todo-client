@@ -6,13 +6,13 @@ import { useData } from "../../DataContext";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const MemberList = styled.ul({
+const UnorderedList = styled.ul({
     listStyle: 'none',
     margin: '0',
     padding: '0'
 });
 
-const MemberListItem = styled.li({
+const ListItem = styled.li({
     backgroundColor: '#f8f9fa',
     marginTop: '3px',
     padding: '5px 15px',
@@ -36,7 +36,7 @@ const AddUserIcon = styled.span({
     padding: '5px'
 });
 
-const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvite, setEmail }) => {
+const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvite, setEmail, getInvite, invites }) => {
 
     const { name, selectedOwner, members, groupMembersName } = useData();
 
@@ -44,14 +44,11 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
 
     useEffect(() => {
         groupMembersName();
+        getInvite();
         if (selectedOwner) {
             setTempName(selectedOwner.owner_type === 1 ? name : selectedOwner.name)
         }
     }, [selectedOwner])
-
-    useEffect(() => {
-        groupMembersName();
-    }, [])
 
     const onUpdateClick = () => {
         updateGroup(tempName);
@@ -92,11 +89,11 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                         </TabPanel>
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
-                                <MemberList>
+                                <UnorderedList>
                                     {members.map((member, index) => (
-                                        <MemberListItem key={index}>{member.name === name ? "You" : member.name}</MemberListItem>
+                                        <ListItem key={index}>{member.name === name ? "You" : member.name}</ListItem>
                                     ))}
-                                </MemberList>
+                                </UnorderedList>
                             </TabPanel>
                         }
                         <TabPanel>
@@ -108,6 +105,13 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <CustomButton type="button" onClick={createInvite}>Invite</CustomButton>
+                            </div>
+                            <div>
+                                <UnorderedList>
+                                    {invites.map((invite, index) => (
+                                        <ListItem key={index}>{invite.invited_to}</ListItem>
+                                    ))}
+                                </UnorderedList>
                             </div>
                         </TabPanel>
                     </Tabs>}
