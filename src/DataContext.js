@@ -8,13 +8,9 @@ export const useData = () => {
 
 export const DataProvider = ({ children }) => {
 
-
     const [groups, setGroups] = useState([]);
-
     const [name, setName] = useState("");
-
     const [members, setMembers] = useState([]);
-
     const [selectedOwner, setSelectedOwner] = useState();
 
     const getName = async () => {
@@ -50,7 +46,22 @@ export const DataProvider = ({ children }) => {
         }
     }
 
-    const value = { selectedOwner, setSelectedOwner, getName, name, groups, setGroups, members, setMembers, groupMembersName };
+    const getInviteDetails = async (inviteToken) => {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite", {
+                method: "POST",
+                headers: { invitetoken: inviteToken }
+            })
+
+            return response;
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    const value = { selectedOwner, setSelectedOwner, getName, name, groups, setGroups, members, setMembers, groupMembersName, getInviteDetails };
 
     return (
         <DataContext.Provider value={value}>

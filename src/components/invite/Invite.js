@@ -1,42 +1,33 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
+import { useData } from '../../DataContext';
 
 const Invite = () => {
+
+    const { getInviteDetails } = useData();
+    
+    const search = useLocation().search
 
     useEffect(() => {
         checkInvite();
     });
 
-    const search = useLocation().search
     const navigate = useNavigate();
 
     const checkInvite = async () => {
+        
+        const inviteToken = new URLSearchParams(search).get('invitetoken')
 
-        const inviteToken = new URLSearchParams(search).get('inviteToken')
+        const response = await getInviteDetails(inviteToken);
 
-        try {
-            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite", {
-                method: "POST",
-                headers: { invitetoken: inviteToken }
-            })
+        const parseRes = await response.json();
 
-            const parseRes = await response.json();
-
-            if (response.status === 200) {
-                localStorage.setItem("invitetoken", inviteToken)
-                navigate("/register");
-            } else {
-                navigate("/login");
-            }
-
-            if (parseRes.length === 0) {
-                navigate("/register");
-            } else {
-                navigate("/login");
-            }
-
-        } catch (err) {
-            console.error(err.message);
+        if (response.status === 200 || parseRes.length === 0) {
+            localStorage.setItem("invitetoken", inviteToken)
+            navigate("/register");
+        } else {
+            navigate("/login");
+            alert("Invalid Token");
         }
     }
 

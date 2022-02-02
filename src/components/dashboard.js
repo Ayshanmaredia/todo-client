@@ -50,9 +50,12 @@ const Dashboard = ({ setAuth }) => {
         }
     }
 
+    let tokensToRemove = ["token", "invitetoken"];
+
     const logout = (e) => {
         e.preventDefault();
-        localStorage.removeItem("token");
+        tokensToRemove.forEach(token =>
+            localStorage.removeItem(token))
         setAuth(false);
         toast.success("Logout successfully")
     };
