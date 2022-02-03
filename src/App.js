@@ -16,6 +16,8 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const [inviteDetails, setInviteDetails] = useState([])
+
   const { getInviteDetails } = useData();
 
   const setAuth = (boolean) => {
@@ -56,7 +58,7 @@ function App() {
       // 2. Update group_user_mapping
       try {
 
-        const body = { "group_id": parseRes[0].group_id }
+        const body = { "group_id": parseRes.group_id }
 
         await fetch(process.env.REACT_APP_HOST_URL + "/group/group-user-map", {
           method: "PUT",
@@ -67,8 +69,20 @@ function App() {
       } catch (err) {
         console.error(err.message);
       }
-      
+
       // 3. update invite status in invites table
+      try {
+
+        await fetch(process.env.REACT_APP_HOST_URL + "/invite/update-inviteStatus", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", token: localStorage.token, invitetoken: localStorage.invitetoken }
+        })
+
+        localStorage.removeItem("invitetoken")
+        
+      } catch (err) {
+        console.error(err.message);
+      }
     }
 
   }
