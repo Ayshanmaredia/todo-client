@@ -9,11 +9,16 @@ export const useData = () => {
 export const DataProvider = ({ children }) => {
 
     const [groups, setGroups] = useState([]);
-    const [name, setName] = useState("");
+    const [user, setUser] = useState("");
     const [members, setMembers] = useState([]);
     const [selectedOwner, setSelectedOwner] = useState();
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
-    const getName = async () => {
+    const toggleSidebarMobile = () => {
+        setIsCollapsed(!isCollapsed)
+    }
+
+    const getUser = async () => {
         try {
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/dashboard", {
                 method: "GET",
@@ -22,13 +27,14 @@ export const DataProvider = ({ children }) => {
 
             const parseRes = await response.json();
 
-            setName(parseRes.name);
+            setUser(parseRes);
 
         } catch (err) {
             console.error(err.message);
         }
     };
 
+  
     const groupMembersName = async () => {
 
         try {
@@ -61,7 +67,7 @@ export const DataProvider = ({ children }) => {
         }
     }
 
-    const value = { selectedOwner, setSelectedOwner, getName, name, groups, setGroups, members, setMembers, groupMembersName, getInviteDetails };
+    const value = { selectedOwner, setSelectedOwner, user, getUser, groups, setGroups, members, setMembers, groupMembersName, getInviteDetails, isCollapsed, toggleSidebarMobile };
 
     return (
         <DataContext.Provider value={value}>

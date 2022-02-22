@@ -1,26 +1,35 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useData } from "../../DataContext";
 import GroupItem from "./GroupItem";
 import IndividualItem from "./IndividualItem";
+import { BurgerMenu } from '../../styles';
 
-const SidebarContainer = styled.div({
-    height: '100vh',
-    width: '225px',
-    backgroundColor: '#f3f4f7',
-    display: 'inline-block',
-    "@media (max-width: 768px)": {
-        display: 'none',
-      }
-});
+const SidebarContainer = styled.div`
+    height: 100vh;
+    width: 100%;
+    background-color: #f3f4f7;
+    display: none;
+    position: absolute;
+    z-index: 1;
+    transition: 0.2s all;
+    ${props => props.isCollapsed && css`
+    width: 0;
+    overflow: hidden;
+  `};
+    @media (max-width: 767px) {
+        display: inline-block;
+    }
+`;
 
 const SideBarHeader = styled.div({
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
-    height: '56px'
+    height: '56px',
+    marginLeft: '7px'
 });
 
 const SideBarBody = styled.div({
@@ -59,9 +68,9 @@ const GroupAddButton = styled(FontAwesomeIcon)({
     }
 });
 
-function Sidebar({ groups, setGroups, handleShow, logout }) {
+function SidebarMobile({ groups, setGroups, handleShow, logout }) {
 
-    const { selectedOwner, setSelectedOwner } = useData();
+    const { selectedOwner, setSelectedOwner, isCollapsed, toggleSidebarMobile } = useData();
 
     const onNameClick = () => {
         setSelectedOwner({
@@ -69,6 +78,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
             owner_type_id: null,
             name: null
         })
+        toggleSidebarMobile();
     }
 
     const onGroupClick = (group) => {
@@ -78,6 +88,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
             name: group.name,
             owner_id: group.owner_id
         })
+        toggleSidebarMobile();
     }
 
     useEffect(() => {
@@ -103,9 +114,10 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     }, []);
 
     return (
-        <SidebarContainer>
+        <SidebarContainer isCollapsed={isCollapsed}>
             <SideBarHeader>
-                <h4>Listicle Board</h4>
+                <BurgerMenu onClick={toggleSidebarMobile} icon="bars" />
+                <h4 className="mt-1">Listicle Board Mobile</h4>
             </SideBarHeader>
             <SideBarBody>
                 <IndividualItem
@@ -138,4 +150,4 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     )
 }
 
-export default Sidebar;
+export default SidebarMobile;

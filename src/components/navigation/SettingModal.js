@@ -6,20 +6,25 @@ import { useData } from "../../DataContext";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const UnorderedList = styled.ul({
+const CustomButtonDiv = styled.div({
+    margin: '5px',
+    display: 'inline-block',
+});
+
+const MembersList = styled.ul({
     listStyle: 'none',
     margin: '0',
     padding: '0'
 });
 
-const ListItem = styled.li({
+const MembersName = styled.li({
     backgroundColor: '#f8f9fa',
     marginTop: '3px',
     padding: '5px 15px',
     fontSize: '16px'
 });
 
-const CustomButton = styled.button({
+const InviteButton = styled.button({
     width: '20%',
     border: 'none',
     borderRadius: '5px',
@@ -30,7 +35,7 @@ const CustomButton = styled.button({
         backgroundColor: '#198754',
         color: 'white'
     }
-})
+});
 
 const AddUserIcon = styled.span({
     padding: '5px'
@@ -38,7 +43,7 @@ const AddUserIcon = styled.span({
 
 const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvite, setEmail, getInvite, invites }) => {
 
-    const { name, selectedOwner, members, groupMembersName } = useData();
+    const { user, selectedOwner, members, groupMembersName } = useData();
 
     const [tempName, setTempName] = useState();
 
@@ -46,7 +51,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
         groupMembersName();
         getInvite();
         if (selectedOwner) {
-            setTempName(selectedOwner.owner_type === 1 ? name : selectedOwner.name)
+            setTempName(selectedOwner.owner_type === 1 ? user.name : selectedOwner.name)
         }
     }, [selectedOwner])
 
@@ -71,14 +76,16 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                         <TabList>
                             <Tab>{selectedOwner.owner_type === 0 ? "Group" : "Name"}</Tab>
                             {selectedOwner.owner_type === 0 &&
-                                <Tab>Members</Tab>
+                                <>
+                                    <Tab>Members</Tab>
+                                    <Tab>
+                                        <AddUserIcon>
+                                            <FontAwesomeIcon icon="user-plus" />
+                                        </AddUserIcon>
+                                        Invite Member
+                                    </Tab>
+                                </>
                             }
-                            <Tab>
-                                <AddUserIcon>
-                                    <FontAwesomeIcon icon="user-plus" />
-                                </AddUserIcon>
-                                Invite Member
-                            </Tab>
                         </TabList>
                         <TabPanel>
                             <Form.Control
@@ -86,54 +93,65 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                                 defaultValue={tempName}
                                 onChange={(e) => setTempName(e.target.value)}
                             />
+                            {selectedOwner && selectedOwner.owner_type === 0
+                                ?
+                                <>
+                                    {selectedOwner.owner_id === user.id &&
+                                        <CustomButtonDiv>
+                                            <Button variant="danger" onClick={onDeleteClick}>
+                                                Delete
+                                            </Button>
+                                        </CustomButtonDiv>
+                                    }
+                                    <CustomButtonDiv>
+                                        <Button variant="primary" onClick={onUpdateClick}>
+                                            Save Changes
+                                        </Button>
+                                    </CustomButtonDiv>
+                                </>
+                                :
+                                <>
+                                    <CustomButtonDiv>
+                                        <Button variant="primary" onClick={onUpdateClick}>
+                                            Save Changes
+                                        </Button>
+                                    </CustomButtonDiv>
+                                </>
+                            }
                         </TabPanel>
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
-                                <UnorderedList>
+                                <MembersList>
                                     {members.map((member, index) => (
-                                        <ListItem key={index}>{member.name === name ? "You" : member.name}</ListItem>
+                                        <MembersName key={index}>{member.name === user.name ? "You" : member.name}</MembersName>
                                     ))}
-                                </UnorderedList>
+                                </MembersList>
                             </TabPanel>
                         }
-                        <TabPanel>
-                            <div className="d-flex">
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Enter email id"
-                                    className="w-75"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <CustomButton type="button" onClick={createInvite}>Invite</CustomButton>
-                            </div>
-                            <div>
-                                <UnorderedList>
-                                    {invites.map((invite, index) => (
-                                        <ListItem key={index}>{invite.invited_to}</ListItem>
-                                    ))}
-                                </UnorderedList>
-                            </div>
-                        </TabPanel>
-                    </Tabs>}
+                        {selectedOwner.owner_type === 0 &&
+                            <TabPanel>
+                                <div className="d-flex">
+                                    <Form.Control
+                                        type="email"
+                                        placeholder="Enter email id"
+                                        className="w-75"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                    <InviteButton type="button" onClick={createInvite}>Invite</InviteButton>
+                                </div>
+                                <div>
+                                    <MembersList>
+                                        {invites.map((invite, index) => (
+                                            <MembersName key={index}>{invite.invited_to}</MembersName>
+                                        ))}
+                                    </MembersList>
+                                </div>
+                            </TabPanel>
+                        }
+                    </Tabs>
+                }
             </Modal.Body>
-            {selectedOwner && selectedOwner.owner_type === 0
-                ?
-                <Modal.Footer>
-                    <Button variant="danger" onClick={onDeleteClick}>
-                        Delete
-                    </Button>
-                    <Button variant="primary" onClick={onUpdateClick}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-                :
-                <Modal.Footer>
-                    <Button variant="primary" onClick={onUpdateClick}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            }
-        </Modal>
+        </Modal >
     )
 };
 

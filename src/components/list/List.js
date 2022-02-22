@@ -12,7 +12,7 @@ const ListContainer = styled.div({
     flexDirection: 'column',
     alignItems: 'center',
     height: '100%'
-})
+});
 
 const ListWrapper = styled.div({
     height: 'calc(100% - 56px)',
@@ -20,8 +20,12 @@ const ListWrapper = styled.div({
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
-})
+    alignItems: 'center',
+    padding: '0 100px',
+    "@media (max-width: 768px)": {
+        padding: '0 20px',
+      }
+});
 
 const List = () => {
 

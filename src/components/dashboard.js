@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Sidebar from "./sidebar/Sidebar";
+import SidebarMobile from "./sidebar/SidebarMobile";
 import GroupModal from "./GroupModal";
 import List from "./list/List";
 import { useData } from "../DataContext";
@@ -9,14 +10,18 @@ import { useData } from "../DataContext";
 const DashboardContainer = styled.div({
     width: '100%',
     height: '100vh',
-    display: 'inline-flex'
+    display: 'inline-flex',
+    position: 'relative',
 });
 
 const DashboardBody = styled.div({
     width: 'calc(100% - 225px)',
     height: '100%',
     display: 'inline-block',
-})
+    "@media (max-width: 767px)": {
+        width: '100%'
+    }
+});
 
 const Dashboard = ({ setAuth }) => {
 
@@ -68,6 +73,13 @@ const Dashboard = ({ setAuth }) => {
                 handleShow={handleShow}
                 logout={logout}
             />
+            <SidebarMobile
+                groups={groups}
+                setGroups={setGroups}
+                handleShow={handleShow}
+                logout={logout}
+            />
+
 
             <DashboardBody>
                 <List />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import "./components/FontAwesomeIcons";
@@ -16,17 +16,21 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const [inviteDetails, setInviteDetails] = useState([])
-
   const { getInviteDetails } = useData();
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
 
-  useEffect(() => {
-    processInviteToken();
-    isAuth();
+  useLayoutEffect(() => {
+    const inviteToken = localStorage.getItem("invitetoken");
+    if (inviteToken) {
+      processInviteToken().then(() => {
+        isAuth();
+      })
+    } else {
+      isAuth();
+    }
   }, []);
 
   async function isAuth() {
@@ -79,7 +83,7 @@ function App() {
         })
 
         localStorage.removeItem("invitetoken")
-        
+
       } catch (err) {
         console.error(err.message);
       }

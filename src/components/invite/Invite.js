@@ -5,7 +5,7 @@ import { useData } from '../../DataContext';
 const Invite = () => {
 
     const { getInviteDetails } = useData();
-    
+
     const search = useLocation().search
 
     useEffect(() => {
@@ -15,19 +15,18 @@ const Invite = () => {
     const navigate = useNavigate();
 
     const checkInvite = async () => {
-        
+
         const inviteToken = new URLSearchParams(search).get('invitetoken')
 
         const response = await getInviteDetails(inviteToken);
+        console.log(inviteToken);
 
-        const parseRes = await response.json();
-
-        if (response.status === 200 || parseRes.length === 0) {
+        if (response.status === 200) {
             localStorage.setItem("invitetoken", inviteToken)
             navigate("/register");
         } else {
-            navigate("/login");
             alert("Invalid Token");
+            navigate("/login");
         }
     }
 

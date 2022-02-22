@@ -3,8 +3,8 @@ import { Form, Card } from "react-bootstrap";
 import styled from "styled-components";
 
 const CardWrapper = styled(Card)({
-    width: '35%',
-    margin: '5px 0'
+    width: '100%',
+    margin: '5px 0',
 });
 
 const FormElement = styled.div({
@@ -20,7 +20,7 @@ const CardTitle = styled(Card.Title)({
     textOverflow: 'ellipsis',
     marginLeft: '1rem'
 
-})
+});
 
 const ListItem = ({ listItem, onKeyPress, onBlur, handleShow, setSelectedListItem, updateList }) => {
 

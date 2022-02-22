@@ -4,16 +4,31 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useData } from "../../DataContext";
 import SettingModal from "./SettingModal";
+import { BurgerMenu } from '../../styles';
 import { toast } from "react-toastify";
 
 const NavbarContainer = styled(Navbar)({
     marginBottom: '10px',
     width: '100%'
+});
+
+const NavWrapper = styled.div({
+    display: 'flex',
+    flexWrap: 'inherit',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    margin: '0 7px'
 })
 
-const NavbarBrand = styled(Navbar.Brand)({
+const NavbarBrand = styled.div({
+    padding: '5px 0',
+    marginRight: '16px',
+    fontSize: '20px',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
     fontWeight: '500'
-})
+});
 
 const SettingIcon = styled.span({
     margin: '0 25px',
@@ -24,7 +39,18 @@ const SettingIcon = styled.span({
         color: '#0d6efd',
         transform: 'rotatez(90deg)'
     }
-})
+});
+
+const ToggleButton = styled.span({
+    "@media (min-width: 768px)": {
+        display: 'none',
+    }
+});
+
+const NavbarItems = styled.div({
+    display: 'flex',
+    flexDirection: 'row-reverse'
+});
 
 const NavBar = () => {
 
@@ -37,10 +63,10 @@ const NavBar = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { getName, name, selectedOwner, groups, setGroups, setSelectedOwner } = useData();
+    const { getUser, user, selectedOwner, groups, setGroups, setSelectedOwner, toggleSidebarMobile } = useData();
 
     useEffect(() => {
-        getName();
+        getUser();
     });
 
     const updateGroup = async (groupName) => {
@@ -99,13 +125,11 @@ const NavBar = () => {
         const body = { "email": email, "group_id": selectedOwner.owner_type_id }
 
         try {
-            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
+            await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
             });
-
-            const parseRes = await response.json();
 
         } catch (err) {
             console.error(err.message);
@@ -132,17 +156,19 @@ const NavBar = () => {
 
     return (
         <NavbarContainer bg="light" expand="lg">
-            <Container fluid>
+            <NavWrapper>
                 {selectedOwner &&
-                    <NavbarBrand>{selectedOwner.owner_type === 1 ? name : selectedOwner.name}</NavbarBrand>}
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: '100px' }}
-                        navbarScroll
-                    >
-                    </Nav>
+                    <NavbarBrand>
+                        <ToggleButton className="md-hidden" onClick={toggleSidebarMobile}>
+                            <BurgerMenu icon="bars" />
+                        </ToggleButton>
+                        {selectedOwner.owner_type === 1 ? user.name : selectedOwner.name}
+                    </NavbarBrand>
+                }
+                <NavbarItems>
+                    <SettingIcon onClick={handleShow}>
+                        <FontAwesomeIcon icon="cog" />
+                    </SettingIcon>
                     <Form className="d-flex">
                         <FormControl
                             type="search"
@@ -152,9 +178,9 @@ const NavBar = () => {
                         />
                         <Button variant="outline-success">Search</Button>
                     </Form>
-                    <SettingIcon onClick={handleShow}>
-                        <FontAwesomeIcon icon="cog" />
-                    </SettingIcon>
+                </NavbarItems>
+                {
+                    show &&
                     <SettingModal
                         show={show}
                         handleClose={handleClose}
@@ -165,8 +191,8 @@ const NavBar = () => {
                         getInvite={getInvite}
                         invites={invites}
                     />
-                </Navbar.Collapse>
-            </Container>
+                }
+            </NavWrapper>
         </NavbarContainer>
     )
 }
