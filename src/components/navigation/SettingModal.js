@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useData } from "../../DataContext";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SearchInput } from "../../styles";
 
 const CustomButtonDiv = styled.div({
     margin: '5px',
@@ -88,7 +89,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                             }
                         </TabList>
                         <TabPanel>
-                            <Form.Control
+                            <SearchInput
                                 type="text"
                                 defaultValue={tempName}
                                 onChange={(e) => setTempName(e.target.value)}
@@ -131,7 +132,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
                                 <div className="d-flex">
-                                    <Form.Control
+                                    <SearchInput
                                         type="email"
                                         placeholder="Enter email id"
                                         className="w-75"
@@ -151,7 +152,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                     </Tabs>
                 }
             </Modal.Body>
-        </Modal >
+        </Modal>
     )
 };
 

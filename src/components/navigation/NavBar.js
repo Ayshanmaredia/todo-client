@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Container, Nav, Form, FormControl, Button } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useData } from "../../DataContext";
 import SettingModal from "./SettingModal";
+import SearchBox from "./SearchBox";
 import { BurgerMenu } from '../../styles';
 import { toast } from "react-toastify";
 
 const NavbarContainer = styled(Navbar)({
-    marginBottom: '10px',
-    width: '100%'
+    width: '100%',
+    backgroundColor: '#faf9fa'
 });
 
 const NavWrapper = styled.div({
@@ -36,20 +37,19 @@ const SettingIcon = styled.span({
     cursor: 'pointer',
     transition: '0.2s',
     ":hover": {
-        color: '#0d6efd',
-        transform: 'rotatez(90deg)'
+        color: '#a69577',
+        transform: 'rotate(90deg)'
     }
 });
 
 const ToggleButton = styled.span({
     "@media (min-width: 768px)": {
-        display: 'none',
+        display: 'none'
     }
 });
 
 const NavbarItems = styled.div({
-    display: 'flex',
-    flexDirection: 'row-reverse'
+    display: 'flex'
 });
 
 const NavBar = () => {
@@ -63,11 +63,15 @@ const NavBar = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { getUser, user, selectedOwner, groups, setGroups, setSelectedOwner, toggleSidebarMobile } = useData();
+    const { getUser, user, selectedOwner, groups, setGroups, setSelectedOwner, toggleSidebarMobile, setSearchValue } = useData();
 
     useEffect(() => {
         getUser();
     });
+
+    const handleChange = (e) => {
+        setSearchValue(e.target.value);
+    }
 
     const updateGroup = async (groupName) => {
 
@@ -155,7 +159,7 @@ const NavBar = () => {
 
 
     return (
-        <NavbarContainer bg="light" expand="lg">
+        <NavbarContainer expand="lg">
             <NavWrapper>
                 {selectedOwner &&
                     <NavbarBrand>
@@ -166,18 +170,13 @@ const NavBar = () => {
                     </NavbarBrand>
                 }
                 <NavbarItems>
+                    <SearchBox
+                        className="search-container"
+                        handleChange={handleChange}
+                    />
                     <SettingIcon onClick={handleShow}>
                         <FontAwesomeIcon icon="cog" />
                     </SettingIcon>
-                    <Form className="d-flex">
-                        <FormControl
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
                 </NavbarItems>
                 {
                     show &&

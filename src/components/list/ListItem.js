@@ -1,10 +1,19 @@
 import React from "react";
 import { Form, Card } from "react-bootstrap";
 import styled from "styled-components";
+import { SearchInput } from "../../styles";
 
 const CardWrapper = styled(Card)({
     width: '100%',
-    margin: '5px 0',
+    margin: '3px 0',
+    backgroundColor: '#faf9fa',
+    cursor: 'pointer',
+    border: 'none',
+    boxShadow: '0px 0px 4px 0px #cecece',
+    transition: 'all .3s ease',
+    ":hover": {
+        transform: 'scale(1.02)'
+    }
 });
 
 const FormElement = styled.div({
@@ -14,12 +23,12 @@ const FormElement = styled.div({
 
 const CardTitle = styled(Card.Title)({
     height: '25px',
+    width: '100%',
     marginBottom: '0',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    marginLeft: '1rem'
-
+    marginLeft: '16px'
 });
 
 const ListItem = ({ listItem, onKeyPress, onBlur, handleShow, setSelectedListItem, updateList }) => {
@@ -41,7 +50,7 @@ const ListItem = ({ listItem, onKeyPress, onBlur, handleShow, setSelectedListIte
                 {listItem.isEditing
                     ?
                     <Form>
-                        <Form.Control autoFocus
+                        <SearchInput autoFocus
                             type="text" placeholder="Add item"
                             onKeyPress={(e) => onKeyPress(e, listItem.id)}
                             onBlur={(e) => onBlur(e, listItem.id)} />

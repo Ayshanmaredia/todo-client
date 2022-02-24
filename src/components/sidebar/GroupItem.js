@@ -12,8 +12,8 @@ function GroupItem({ onGroupClick, group, selectedOwner, owner_type }) {
 
     return (
         <ListItem
-            color={selectedOwner && selectedOwner.owner_type === owner_type && selectedOwner.owner_type_id === group.group_id ? "#fff" : "#000"}
-            backgroundColor={selectedOwner && selectedOwner.owner_type === owner_type && selectedOwner.owner_type_id === group.group_id ? "#0d6efd" : "transparent"}
+            color={selectedOwner && selectedOwner.owner_type === owner_type && selectedOwner.owner_type_id === group.group_id ? "rgba(0, 0, 0, 0.6)" : "#000"}
+            backgroundColor={selectedOwner && selectedOwner.owner_type === owner_type && selectedOwner.owner_type_id === group.group_id ? "#ececef" : "transparent"}
             onClick={() => onGroupClick(group)}>{group.name}
         </ListItem>
     )

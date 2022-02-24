@@ -13,8 +13,8 @@ function IndividualItem({ onNameClick, selectedOwner, owner_type }) {
 
     return (
         <ListItem
-            color={selectedOwner && selectedOwner.owner_type === owner_type ? "#fff" : "#000"} 
-            backgroundColor = {selectedOwner && selectedOwner.owner_type === owner_type ? "#0d6efd" : "transparent"}
+            color={selectedOwner && selectedOwner.owner_type === owner_type ? "rgba(0, 0, 0, 0.6)" : "#000"} 
+            backgroundColor = {selectedOwner && selectedOwner.owner_type === owner_type ? "#ececef" : "transparent"}
             onClick={onNameClick}>
             My list
         </ListItem>

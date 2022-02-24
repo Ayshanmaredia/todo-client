@@ -1,7 +1,8 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { SearchInput } from "../styles";
 
-function GroupModal({ show, handleClose, setGroupName, saveGroup }) {
+const GroupModal = ({ show, handleClose, setGroupName, saveGroup }) => {
 
     const onCreateClick = () => {
         saveGroup();
@@ -16,10 +17,10 @@ function GroupModal({ show, handleClose, setGroupName, saveGroup }) {
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Control type="text" 
-                        placeholder="Enter group name" 
-                        onChange={(e) => setGroupName(e.target.value)} 
-                        autoComplete="off"
+                        <SearchInput type="text"
+                            placeholder="Enter group name"
+                            onChange={(e) => setGroupName(e.target.value)}
+                            autoComplete="off"
                         />
                     </Form.Group>
                 </Form>

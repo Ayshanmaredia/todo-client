@@ -7,12 +7,13 @@ export const useData = () => {
 }
 
 export const DataProvider = ({ children }) => {
-
+    
     const [groups, setGroups] = useState([]);
     const [user, setUser] = useState("");
     const [members, setMembers] = useState([]);
     const [selectedOwner, setSelectedOwner] = useState();
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [searchValue, setSearchValue] = useState();
 
     const toggleSidebarMobile = () => {
         setIsCollapsed(!isCollapsed)
@@ -67,7 +68,7 @@ export const DataProvider = ({ children }) => {
         }
     }
 
-    const value = { selectedOwner, setSelectedOwner, user, getUser, groups, setGroups, members, setMembers, groupMembersName, getInviteDetails, isCollapsed, toggleSidebarMobile };
+    const value = { selectedOwner, setSelectedOwner, user, getUser, groups, setGroups, members, setMembers, groupMembersName, getInviteDetails, isCollapsed, toggleSidebarMobile, searchValue, setSearchValue };
 
     return (
         <DataContext.Provider value={value}>

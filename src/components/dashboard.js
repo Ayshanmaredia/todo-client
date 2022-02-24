@@ -18,6 +18,7 @@ const DashboardBody = styled.div({
     width: 'calc(100% - 225px)',
     height: '100%',
     display: 'inline-block',
+    backgroundColor: '#ececef',
     "@media (max-width: 767px)": {
         width: '100%'
     }
@@ -33,6 +34,8 @@ const Dashboard = ({ setAuth }) => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    
 
     async function saveGroup() {
         try {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import ListItem from "./ListItem";
 import ListModal from "./ListModal";
 import { useData } from "../../DataContext";
 import NavBar from "../navigation/NavBar";
+import SearchBox from "../navigation/SearchBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ListContainer = styled.div({
     display: 'flex',
@@ -24,12 +25,30 @@ const ListWrapper = styled.div({
     padding: '0 100px',
     "@media (max-width: 768px)": {
         padding: '0 20px',
-      }
+    }
 });
+
+const AddButton = styled.button({
+    fontSize: '16px',
+    opacity: '0.9',
+    margin: '10px 0',
+    lineHeight: '2.5',
+    backgroundColor: 'transparent',
+    width: '100%',
+    border: '1px solid gray',
+    borderRadius: '4px'
+});
+
+const AddIcon = styled(FontAwesomeIcon)({
+    fontSize: '16px',
+    opacity: '0.9',
+    margin: '0 5px'
+})
 
 const List = () => {
 
     const [lists, setLists] = useState([]);
+    const [filteredLists, setFilteredLists] = useState([]);
     const [selectedListItem, setSelectedListItem] = useState();
     const [selectedId, setSelectedId] = useState();
 
@@ -38,13 +57,25 @@ const List = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { selectedOwner } = useData();
+    const { selectedOwner, searchValue, setSearchValue } = useData();
 
     useEffect(() => {
         if (selectedOwner) {
             getList();
         }
     }, [selectedOwner]);
+
+    useEffect(() => {
+        if (lists.length > 0) {
+            if (searchValue) {
+                setFilteredLists(lists.filter((list) => list.name.toLowerCase().includes(searchValue.toLowerCase())))
+            } else {
+                setFilteredLists(lists);
+            }
+        } else {
+            setFilteredLists([]);
+        }
+    }, [searchValue, lists]);
 
     const handleClick = () => {
         addList();
@@ -75,9 +106,12 @@ const List = () => {
                 removeEmptyList(id);
             } else {
                 editList(e, id);
-                // createList(id);
             }
         }
+    }
+
+    const handleChange = (e) => {
+        setSearchValue(e.target.value);
     }
 
     const removeEmptyList = (id) => {
@@ -203,9 +237,16 @@ const List = () => {
         <ListContainer>
             <NavBar />
             <ListWrapper>
-                <Button variant="primary" onClick={handleClick}>Add an item</Button>
+                <SearchBox
+                    className="mobile-search-container"
+                    handleChange={handleChange}
+                />
+                <AddButton onClick={handleClick}>
+                    <AddIcon icon="plus-square" />
+                    Add an item
+                </AddButton>
                 {
-                    lists.map((listItem, index) => (
+                    filteredLists.map((listItem, index) => (
                         <ListItem key={index}
                             listItem={listItem}
                             onKeyPress={onKeyPress}

@@ -9,11 +9,11 @@ import IndividualItem from "./IndividualItem";
 const SidebarContainer = styled.div({
     height: '100vh',
     width: '225px',
-    backgroundColor: '#f3f4f7',
+    backgroundColor: '#faf9fa',
     display: 'inline-block',
     "@media (max-width: 768px)": {
         display: 'none',
-      }
+    }
 });
 
 const SideBarHeader = styled.div({
@@ -24,8 +24,9 @@ const SideBarHeader = styled.div({
 });
 
 const SideBarBody = styled.div({
+    padding: '0 10px',
     height: 'calc(100% - 106px)',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     scrollBehavior: 'smooth'
 });
 
@@ -42,8 +43,7 @@ const GroupListHeader = styled.div({
     marginTop: '10px',
     padding: '2px 15px',
     fontSize: '18px',
-    color: '#253858',
-    fontWeight: '500',
+    color: '#253858'
 });
 
 const GroupFontIcon = styled.span({
@@ -132,7 +132,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
                 </GroupList>
             </SideBarBody>
             <SideBarFooter>
-                <Button className="w-100" variant="primary" onClick={e => logout(e)}>Logout</Button>
+                <Button className="w-100" variant="danger" onClick={e => logout(e)}>Logout</Button>
             </SideBarFooter>
         </SidebarContainer>
     )
