@@ -15,7 +15,7 @@ export const SideBarItem = styled.li({
 export const BurgerMenu = styled(FontAwesomeIcon)({
     fontSize: '20px',
     margin: '0 10px',
-})
+});
 
 export const SearchInput = styled.input({
     marginRight: '10px',
@@ -34,4 +34,22 @@ export const SearchInput = styled.input({
     ":focus-visible": {
         outline: 'none'
     }
-})
+});
+
+export const MembersList = styled.ul({
+    listStyle: 'none',
+    margin: '0',
+    padding: '0'
+});
+
+export const MembersName = styled.li({
+    backgroundColor: '#f8f9fa',
+    marginTop: '3px',
+    padding: '5px 15px',
+    fontSize: '16px'
+});
+
+export const CustomButtonDiv = styled.div({
+    margin: '5px',
+    display: 'inline-block',
+});

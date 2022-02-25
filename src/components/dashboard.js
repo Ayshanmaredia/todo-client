@@ -29,9 +29,7 @@ const Dashboard = ({ setAuth }) => {
     const { groups, setGroups } = useData();
 
     const [groupName, setGroupName] = useState();
-
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 

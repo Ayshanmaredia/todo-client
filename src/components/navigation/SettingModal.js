@@ -1,51 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useData } from "../../DataContext";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SearchInput } from "../../styles";
-
-const CustomButtonDiv = styled.div({
-    margin: '5px',
-    display: 'inline-block',
-});
-
-const MembersList = styled.ul({
-    listStyle: 'none',
-    margin: '0',
-    padding: '0'
-});
-
-const MembersName = styled.li({
-    backgroundColor: '#f8f9fa',
-    marginTop: '3px',
-    padding: '5px 15px',
-    fontSize: '16px'
-});
-
-const InviteButton = styled.button({
-    width: '20%',
-    border: 'none',
-    borderRadius: '5px',
-    float: 'right',
-    marginLeft: '20px',
-    cursor: 'pointer',
-    ":hover": {
-        backgroundColor: '#198754',
-        color: 'white'
-    }
-});
+import NamePanel from "./tabPanels/NamePanel";
+import MembersPanel from "./tabPanels/MembersPanel";
+import InvitePanel from "./tabPanels/InvitePanel";
+import SaveButton from "./buttons/SaveButton";
+import DeleteButton from "./buttons/DeleteButton"
 
 const AddUserIcon = styled.span({
     padding: '5px'
 });
 
-const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvite, setEmail, getInvite, invites }) => {
+const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
 
-    const { user, selectedOwner, members, groupMembersName } = useData();
+    const { user, selectedOwner, groupMembersName } = useData();
 
+    const [email, setEmail] = useState("");
+    const [invites, setInvites] = useState([]);
     const [tempName, setTempName] = useState();
 
     useEffect(() => {
@@ -55,6 +30,39 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
             setTempName(selectedOwner.owner_type === 1 ? user.name : selectedOwner.name)
         }
     }, [selectedOwner])
+
+    const createInvite = async () => {
+
+        const body = { "email": email, "group_id": selectedOwner.owner_type_id }
+
+        try {
+            await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", token: localStorage.token },
+                body: JSON.stringify(body)
+            });
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    const getInvite = async () => {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/get-invite", {
+                method: "GET",
+                headers: { "group_id": selectedOwner.owner_type_id, token: localStorage.token }
+            });
+
+            const parseRes = await response.json();
+
+            setInvites(parseRes);
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 
     const onUpdateClick = () => {
         updateGroup(tempName);
@@ -89,64 +97,40 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup, createInvit
                             }
                         </TabList>
                         <TabPanel>
-                            <SearchInput
-                                type="text"
-                                defaultValue={tempName}
-                                onChange={(e) => setTempName(e.target.value)}
+                            <NamePanel
+                                tempName={tempName}
+                                setTempName={setTempName}
                             />
                             {selectedOwner && selectedOwner.owner_type === 0
                                 ?
                                 <>
                                     {selectedOwner.owner_id === user.id &&
-                                        <CustomButtonDiv>
-                                            <Button variant="danger" onClick={onDeleteClick}>
-                                                Delete
-                                            </Button>
-                                        </CustomButtonDiv>
+                                        <DeleteButton
+                                            onDeleteClick={onDeleteClick}
+                                        />
                                     }
-                                    <CustomButtonDiv>
-                                        <Button variant="primary" onClick={onUpdateClick}>
-                                            Save Changes
-                                        </Button>
-                                    </CustomButtonDiv>
+                                    <SaveButton
+                                        onUpdateClick={onUpdateClick}
+                                    />
                                 </>
                                 :
-                                <>
-                                    <CustomButtonDiv>
-                                        <Button variant="primary" onClick={onUpdateClick}>
-                                            Save Changes
-                                        </Button>
-                                    </CustomButtonDiv>
-                                </>
+                                <SaveButton
+                                    onUpdateClick={onUpdateClick}
+                                />
                             }
                         </TabPanel>
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
-                                <MembersList>
-                                    {members.map((member, index) => (
-                                        <MembersName key={index}>{member.name === user.name ? "You" : member.name}</MembersName>
-                                    ))}
-                                </MembersList>
+                                <MembersPanel />
                             </TabPanel>
                         }
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
-                                <div className="d-flex">
-                                    <SearchInput
-                                        type="email"
-                                        placeholder="Enter email id"
-                                        className="w-75"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                    <InviteButton type="button" onClick={createInvite}>Invite</InviteButton>
-                                </div>
-                                <div>
-                                    <MembersList>
-                                        {invites.map((invite, index) => (
-                                            <MembersName key={index}>{invite.invited_to}</MembersName>
-                                        ))}
-                                    </MembersList>
-                                </div>
+                                <InvitePanel
+                                    setEmail={setEmail}
+                                    createInvite={createInvite}
+                                    invites={invites}
+                                />
                             </TabPanel>
                         }
                     </Tabs>

@@ -51,9 +51,7 @@ const List = () => {
     const [filteredLists, setFilteredLists] = useState([]);
     const [selectedListItem, setSelectedListItem] = useState();
     const [selectedId, setSelectedId] = useState();
-
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
