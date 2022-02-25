@@ -36,7 +36,11 @@ const AddButton = styled.button({
     backgroundColor: 'transparent',
     width: '100%',
     border: '1px solid gray',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    transition: '0.3s all',
+    ":hover": {
+        backgroundColor: "#a69577"
+    }
 });
 
 const AddIcon = styled(FontAwesomeIcon)({
@@ -256,7 +260,6 @@ const List = () => {
                     ))
                 }
             </ListWrapper>
-
             <ListModal
                 show={show}
                 handleClose={handleClose}

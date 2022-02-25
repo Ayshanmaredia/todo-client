@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { SearchInput } from "../../styles";
 
 const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList }) => {
 
@@ -36,14 +37,16 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
                     <Form>
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text"
+                            <SearchInput
+                                type="text"
                                 placeholder="Update item name"
                                 defaultValue={selectedListItem.name}
                                 onChange={(e) => setUpdatedItem({ ...updatedItem, name: e.target.value })} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="description">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3}
+                            <SearchInput
+                                as="textarea" rows={3}
                                 placeholder="Add a more detailed description..."
                                 defaultValue={selectedListItem.description}
                                 onChange={(e) => setUpdatedItem({ ...updatedItem, description: e.target.value })} />

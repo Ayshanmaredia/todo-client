@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { SearchInput } from "../../../styles";
+import { useData } from "../../../DataContext";
 import styled from "styled-components";
 import { MembersList, MembersName } from "../../../styles";
 
@@ -16,7 +17,50 @@ const InviteButton = styled.button({
     }
 });
 
-const InvitePanel = ({ setEmail, createInvite, invites }) => {
+const InvitePanel = () => {
+
+    const { selectedOwner } = useData();
+
+    const [email, setEmail] = useState("");
+    const [invites, setInvites] = useState([]);
+
+    useEffect(() => {
+        getInvite();
+    }, [])
+
+    const createInvite = async () => {
+
+        const body = { "email": email, "group_id": selectedOwner.owner_type_id }
+
+        try {
+            await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", token: localStorage.token },
+                body: JSON.stringify(body)
+            });
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    const getInvite = async () => {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/get-invite", {
+                method: "GET",
+                headers: { "group_id": selectedOwner.owner_type_id, token: localStorage.token }
+            });
+
+            const parseRes = await response.json();
+
+            setInvites(parseRes);
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     return (
         <>
             <div className="d-flex">

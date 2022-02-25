@@ -19,50 +19,14 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
 
     const { user, selectedOwner, groupMembersName } = useData();
 
-    const [email, setEmail] = useState("");
-    const [invites, setInvites] = useState([]);
     const [tempName, setTempName] = useState();
 
     useEffect(() => {
         groupMembersName();
-        getInvite();
         if (selectedOwner) {
             setTempName(selectedOwner.owner_type === 1 ? user.name : selectedOwner.name)
         }
     }, [selectedOwner])
-
-    const createInvite = async () => {
-
-        const body = { "email": email, "group_id": selectedOwner.owner_type_id }
-
-        try {
-            await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", token: localStorage.token },
-                body: JSON.stringify(body)
-            });
-
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
-
-    const getInvite = async () => {
-
-        try {
-            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/get-invite", {
-                method: "GET",
-                headers: { "group_id": selectedOwner.owner_type_id, token: localStorage.token }
-            });
-
-            const parseRes = await response.json();
-
-            setInvites(parseRes);
-
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
 
     const onUpdateClick = () => {
         updateGroup(tempName);
@@ -126,11 +90,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
                         }
                         {selectedOwner.owner_type === 0 &&
                             <TabPanel>
-                                <InvitePanel
-                                    setEmail={setEmail}
-                                    createInvite={createInvite}
-                                    invites={invites}
-                                />
+                                <InvitePanel />
                             </TabPanel>
                         }
                     </Tabs>
