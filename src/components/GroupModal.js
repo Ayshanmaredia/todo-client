@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { SearchInput } from "../styles";
+import { Input } from "../styles";
 
 const GroupModal = ({ show, handleClose, setGroupName, saveGroup }) => {
 
@@ -17,7 +17,7 @@ const GroupModal = ({ show, handleClose, setGroupName, saveGroup }) => {
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formBasicEmail">
-                        <SearchInput type="text"
+                        <Input type="text"
                             placeholder="Enter group name"
                             onChange={(e) => setGroupName(e.target.value)}
                             autoComplete="off"

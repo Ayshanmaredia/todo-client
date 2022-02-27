@@ -17,7 +17,7 @@ export const BurgerMenu = styled(FontAwesomeIcon)({
     margin: '0 10px',
 });
 
-export const SearchInput = styled.input({
+export const Input = styled.input({
     marginRight: '10px',
     width: '100%',
     display: 'block',

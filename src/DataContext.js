@@ -7,7 +7,7 @@ export const useData = () => {
 }
 
 export const DataProvider = ({ children }) => {
-    
+
     const [groups, setGroups] = useState([]);
     const [user, setUser] = useState("");
     const [members, setMembers] = useState([]);
@@ -35,7 +35,6 @@ export const DataProvider = ({ children }) => {
         }
     };
 
-  
     const groupMembersName = async () => {
 
         try {

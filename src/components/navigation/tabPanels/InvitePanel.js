@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { SearchInput } from "../../../styles";
+import { Input } from "../../../styles";
 import { useData } from "../../../DataContext";
 import styled from "styled-components";
 import { MembersList, MembersName } from "../../../styles";
+import AlertMessage from "../../AlertMessage";
 
 const InviteButton = styled.button({
     width: '20%',
@@ -23,24 +24,44 @@ const InvitePanel = () => {
 
     const [email, setEmail] = useState("");
     const [invites, setInvites] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
 
     useEffect(() => {
         getInvite();
     }, [])
 
+    const alertMessage = (message) => {
+        setErrorMessage(message);
+        setShowAlert(true);
+    }
+
     const createInvite = async () => {
+
+        if (!email) {
+            alertMessage("Email field cannot be empty");
+            return;
+        }
 
         const body = { "email": email, "group_id": selectedOwner.owner_type_id }
 
         try {
-            await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
+            const response = await fetch(process.env.REACT_APP_HOST_URL + "/invite/create-invite", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", token: localStorage.token },
                 body: JSON.stringify(body)
             });
 
+            if (response.status === 401) {
+                alertMessage(await response.text());
+                return;
+            }
+
+            const parseRes = await response.json();
+            setInvites([...invites, parseRes]);
+
         } catch (err) {
-            console.error(err.message);
+            alertMessage(err.message);
         }
     }
 
@@ -64,7 +85,7 @@ const InvitePanel = () => {
     return (
         <>
             <div className="d-flex">
-                <SearchInput
+                <Input
                     type="email"
                     placeholder="Enter email id"
                     className="w-75"
@@ -72,6 +93,12 @@ const InvitePanel = () => {
                 />
                 <InviteButton type="button" onClick={createInvite}>Invite</InviteButton>
             </div>
+            {showAlert &&
+                <AlertMessage
+                    errorMessage={errorMessage}
+                    setShowAlert={setShowAlert}
+                />
+            }
             <div>
                 <MembersList>
                     {invites.map((invite, index) => (

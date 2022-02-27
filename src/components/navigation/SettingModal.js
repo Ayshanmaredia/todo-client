@@ -9,7 +9,8 @@ import NamePanel from "./tabPanels/NamePanel";
 import MembersPanel from "./tabPanels/MembersPanel";
 import InvitePanel from "./tabPanels/InvitePanel";
 import SaveButton from "./buttons/SaveButton";
-import DeleteButton from "./buttons/DeleteButton"
+import DeleteButton from "./buttons/DeleteButton";
+import AlertMessage from "../AlertMessage";
 
 const AddUserIcon = styled.span({
     padding: '5px'
@@ -20,6 +21,8 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
     const { user, selectedOwner, groupMembersName } = useData();
 
     const [tempName, setTempName] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
 
     useEffect(() => {
         groupMembersName();
@@ -29,6 +32,11 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
     }, [selectedOwner])
 
     const onUpdateClick = () => {
+        if (!tempName) {
+            setErrorMessage("Name field cannot be empty");
+            setShowAlert(true);
+            return;
+        }
         updateGroup(tempName);
         handleClose();
     }
@@ -65,6 +73,12 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
                                 tempName={tempName}
                                 setTempName={setTempName}
                             />
+                            {showAlert &&
+                                <AlertMessage
+                                    errorMessage={errorMessage}
+                                    setShowAlert={setShowAlert}
+                                />
+                            }
                             {selectedOwner && selectedOwner.owner_type === 0
                                 ?
                                 <>

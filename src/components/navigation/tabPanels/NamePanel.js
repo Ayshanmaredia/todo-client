@@ -1,10 +1,10 @@
 import React from "react"
-import { SearchInput } from "../../../styles"
+import { Input } from "../../../styles"
 
 const NamePanel = ({ tempName, setTempName }) => {
     return (
         <>
-            <SearchInput
+            <Input
                 type="text"
                 defaultValue={tempName}
                 onChange={(e) => setTempName(e.target.value)}

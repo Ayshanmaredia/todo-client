@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { SearchInput } from "../../styles";
+import { Input } from "../../styles";
+import AlertMessage from "../AlertMessage";
 
 const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList }) => {
 
     const [updatedItem, setUpdatedItem] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
 
     useEffect(() => {
+        setErrorMessage();
+        setShowAlert(false);
         if (selectedListItem) {
             setUpdatedItem({
                 id: selectedListItem.id,
@@ -18,6 +23,11 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
     }, [selectedListItem])
 
     const onUpdateClick = () => {
+        if (!updatedItem.name) {
+            setErrorMessage("Name field cannot be empty");
+            setShowAlert(true);
+            return;
+        }
         updateList(updatedItem);
         handleClose();
     }
@@ -36,8 +46,8 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
                 {selectedListItem &&
                     <Form>
                         <Form.Group className="mb-3" controlId="name">
-                            <Form.Label>Name</Form.Label>
-                            <SearchInput
+                            <Form.Label>Name*</Form.Label>
+                            <Input
                                 type="text"
                                 placeholder="Update item name"
                                 defaultValue={selectedListItem.name}
@@ -45,12 +55,18 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="description">
                             <Form.Label>Description</Form.Label>
-                            <SearchInput
+                            <Input
                                 as="textarea" rows={3}
                                 placeholder="Add a more detailed description..."
                                 defaultValue={selectedListItem.description}
                                 onChange={(e) => setUpdatedItem({ ...updatedItem, description: e.target.value })} />
                         </Form.Group>
+                        {showAlert &&
+                            <AlertMessage
+                                errorMessage={errorMessage}
+                                setShowAlert={setShowAlert}
+                            />
+                        }
                     </Form>
                 }
             </Modal.Body>

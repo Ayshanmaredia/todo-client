@@ -63,7 +63,7 @@ const NavBar = () => {
 
     useEffect(() => {
         getUser();
-    });
+    }, []);
 
     const handleChange = (e) => {
         setSearchValue(e.target.value);

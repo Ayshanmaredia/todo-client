@@ -56,7 +56,10 @@ const List = () => {
     const [selectedListItem, setSelectedListItem] = useState();
     const [selectedId, setSelectedId] = useState();
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setSelectedListItem();
+        setShow(false);
+    }
     const handleShow = () => setShow(true);
 
     const { selectedOwner, searchValue, setSearchValue } = useData();

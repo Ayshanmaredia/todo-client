@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Card } from "react-bootstrap";
 import styled from "styled-components";
-import { SearchInput } from "../../styles";
+import { Input } from "../../styles";
 
 const CardWrapper = styled(Card)({
     width: '100%',
@@ -50,7 +50,7 @@ const ListItem = ({ listItem, onKeyPress, onBlur, handleShow, setSelectedListIte
                 {listItem.isEditing
                     ?
                     <Form>
-                        <SearchInput autoFocus
+                        <Input autoFocus
                             type="text" placeholder="Add item"
                             onKeyPress={(e) => onKeyPress(e, listItem.id)}
                             onBlur={(e) => onBlur(e, listItem.id)} />

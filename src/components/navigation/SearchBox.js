@@ -2,7 +2,7 @@ import React from 'react'
 import { Form } from "react-bootstrap";
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SearchInput } from '../../styles';
+import { Input } from '../../styles';
 
 const Search = styled.div({
     display: 'inline-flex',
@@ -26,7 +26,7 @@ const SearchBox = ({ className, handleChange }) => {
     return (
         <Search>
             <Form className={className}>
-                <SearchInput
+                <Input
                     type="search"
                     placeholder="Search"
                     onChange={handleChange}
