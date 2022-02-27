@@ -10,7 +10,7 @@ const GroupModal = ({ show, handleClose, setGroupName, saveGroup }) => {
     }
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Create Group</Modal.Title>
             </Modal.Header>

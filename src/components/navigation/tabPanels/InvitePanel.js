@@ -22,7 +22,7 @@ const InvitePanel = () => {
 
     const { selectedOwner } = useData();
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState();
     const [invites, setInvites] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState();

@@ -33,8 +33,6 @@ const Dashboard = ({ setAuth }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    
-
     async function saveGroup() {
         try {
 

@@ -38,7 +38,7 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
     }
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Task</Modal.Title>
             </Modal.Header>
