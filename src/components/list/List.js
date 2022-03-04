@@ -7,6 +7,7 @@ import { useData } from "../../DataContext";
 import NavBar from "../navigation/NavBar";
 import SearchBox from "../navigation/SearchBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useLocation } from 'react-router-dom'
 
 const ListContainer = styled.div({
     display: 'flex',
@@ -56,19 +57,24 @@ const List = () => {
     const [selectedListItem, setSelectedListItem] = useState();
     const [selectedId, setSelectedId] = useState();
     const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+
+    const { searchValue, setSearchValue } = useData();
+
+    const location = useLocation().search;
+
+    const params = new URLSearchParams(location);
+
     const handleClose = () => {
         setSelectedListItem();
         setShow(false);
     }
-    const handleShow = () => setShow(true);
-
-    const { selectedOwner, searchValue, setSearchValue } = useData();
 
     useEffect(() => {
-        if (selectedOwner) {
-            getList();
-        }
-    }, [selectedOwner]);
+        //if owner type id and owner type are null redirect to name(my list)
+        getList(params.get('owner_type'), params.get('owner_type_id'));
+    }, [location]);
 
     useEffect(() => {
         if (lists.length > 0) {
@@ -150,7 +156,7 @@ const List = () => {
         const list = lists.find(listItem => listItem.id === id);
 
         try {
-            const body = { "name": list.name, "owner_type": selectedOwner.owner_type, "owner_type_id": selectedOwner.owner_type_id, "description": null, "status": 0 }
+            const body = { "name": list.name, "owner_type": params.get('owner_type'), "owner_type_id": params.get('owner_type_id'), "description": null, "status": 0 }
 
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/create-list", {
                 method: "POST",
@@ -176,11 +182,11 @@ const List = () => {
         }
     }
 
-    const getList = async () => {
+    const getList = async (owner_type, owner_type_id) => {
         try {
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/get-lists", {
                 method: "GET",
-                headers: { "owner_type": selectedOwner.owner_type, "owner_type_id": selectedOwner.owner_type_id, token: localStorage.token }
+                headers: { "owner_type": owner_type, "owner_type_id": owner_type_id, token: localStorage.token }
             });
 
             const parseRes = await response.json();

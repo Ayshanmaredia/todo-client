@@ -79,7 +79,6 @@ const Dashboard = ({ setAuth }) => {
                 logout={logout}
             />
 
-
             <DashboardBody>
                 <List />
             </DashboardBody>

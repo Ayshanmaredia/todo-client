@@ -19,7 +19,6 @@ const Invite = () => {
         const inviteToken = new URLSearchParams(search).get('invitetoken')
 
         const response = await getInviteDetails(inviteToken);
-        console.log(inviteToken);
 
         if (response.status === 200) {
             localStorage.setItem("invitetoken", inviteToken)

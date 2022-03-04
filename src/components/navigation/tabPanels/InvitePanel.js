@@ -36,7 +36,8 @@ const InvitePanel = () => {
         setShowAlert(true);
     }
 
-    const createInvite = async () => {
+    const createInvite = async (e) => {
+        e.preventDefault();
 
         if (!email) {
             alertMessage("Email field cannot be empty");
@@ -85,13 +86,15 @@ const InvitePanel = () => {
     return (
         <>
             <div className="d-flex">
-                <Input
-                    type="email"
-                    placeholder="Enter email id"
-                    className="w-75"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <InviteButton type="button" onClick={createInvite}>Invite</InviteButton>
+                <form className="d-flex w-100" onSubmit={createInvite}>
+                    <Input
+                        type="email"
+                        placeholder="Enter email id"
+                        className="w-75"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <InviteButton type="submit">Invite</InviteButton>
+                </form>
             </div>
             {showAlert &&
                 <AlertMessage
