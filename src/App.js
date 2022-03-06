@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/login";
 import Register from "./components/register";
-import Dashboard from "./components/dashboard";
+import Dashboard from "./components/Dashboard";
 import Invite from "./components/invite/Invite";
 import { useData } from "./DataContext";
 
@@ -44,6 +44,7 @@ function App() {
       const parseRes = await response.json();
 
       parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+      return parseRes === true ? true : false;
 
     } catch (err) {
       console.error(err.message);
@@ -122,7 +123,7 @@ function App() {
             <Route
               exact
               path="/dashboard"
-              element={isAuthenticated
+              element={isAuth()
                 ?
                 <Dashboard setAuth={setAuth} />
                 :

@@ -63,14 +63,14 @@ const GroupAddButton = styled(FontAwesomeIcon)({
 function Sidebar({ groups, setGroups, handleShow, logout }) {
 
     const { selectedOwner, setSelectedOwner } = useData();
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
     const location = useLocation().search;
 
     const params = new URLSearchParams(location);
 
     const onNameClick = () => {
-        navigate(`/dashboard/?owner_type=1`)
+        navigate(`/dashboard?owner_type=1`)
         setSelectedOwner({
             owner_type: 1,
             owner_type_id: null,
@@ -79,7 +79,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     }
 
     const onGroupClick = (group) => {
-        navigate(`/dashboard/?owner_type=0&owner_type_id=${group.group_id}`)
+        navigate(`/dashboard?owner_type=0&owner_type_id=${group.group_id}`)
         setSelectedOwner({
             owner_type: 0,
             owner_type_id: group.group_id,
@@ -89,29 +89,45 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     }
 
     useEffect(() => {
-        const getGroups = async () => {
-            try {
-                const response = await fetch(process.env.REACT_APP_HOST_URL + "/group/get-groups", {
-                    method: "GET",
-                    headers: { token: localStorage.token }
-                });
-                const parseRes = await response.json();
-                setGroups(parseRes);
+        fetch(process.env.REACT_APP_HOST_URL + "/group/get-groups", {
+            method: "GET",
+            headers: { token: localStorage.token }
+        }).then((res) => res.json())
+            .then(result => {
+                setGroups(result);
+                setOwner(result)
+            })
 
-            } catch (err) {
-                console.error(err.message)
-            }
-        }
-        getGroups();
+    }, []);
+
+    const setOwner = (groups) => {
         const owner_type = params.get('owner_type');
         const owner_type_id = params.get('owner_type_id');
 
         if (owner_type === null) {
-            navigate(`/dashboard/?owner_type=1`)
+            navigate(`/dashboard?owner_type=1`)
+            setSelectedOwner({
+                owner_type: 1,
+                owner_type_id: null,
+                name: null
+            })
         } else if (owner_type === 0 && owner_type_id === null) {
-            navigate(`/dashboard/?owner_type=1`)
-        } 
-    }, []);
+            navigate(`/dashboard?owner_type=1`)
+            setSelectedOwner({
+                owner_type: 1,
+                owner_type_id: null,
+                name: null
+            })
+        } else {
+            navigate(`/dashboard?owner_type=${owner_type}&owner_type_id=${owner_type_id}`)
+            setSelectedOwner({
+                owner_type: parseInt(owner_type),
+                owner_type_id: parseInt(owner_type_id),
+                name: groups.find((groupItem) => groupItem.group_id === parseInt(owner_type_id)).name
+            })
+        }
+    }
+
 
     return (
         <SidebarContainer>

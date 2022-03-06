@@ -11,6 +11,7 @@ import InvitePanel from "./tabPanels/InvitePanel";
 import SaveButton from "./buttons/SaveButton";
 import DeleteButton from "./buttons/DeleteButton";
 import AlertMessage from "../AlertMessage";
+import { useNavigate } from "react-router-dom";
 
 const AddUserIcon = styled.span({
     padding: '5px'
@@ -19,6 +20,8 @@ const AddUserIcon = styled.span({
 const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
 
     const { user, selectedOwner, groupMembersName } = useData();
+
+    const navigate = useNavigate()
 
     const [tempName, setTempName] = useState();
     const [showAlert, setShowAlert] = useState(false);
@@ -44,6 +47,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
     const onDeleteClick = () => {
         deleteGroup(selectedOwner.owner_type_id);
         handleClose();
+        navigate(`/dashboard?owner_type=1`)
     }
 
     return (

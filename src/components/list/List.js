@@ -72,7 +72,6 @@ const List = () => {
     }
 
     useEffect(() => {
-        //if owner type id and owner type are null redirect to name(my list)
         getList(params.get('owner_type'), params.get('owner_type_id'));
     }, [location]);
 
