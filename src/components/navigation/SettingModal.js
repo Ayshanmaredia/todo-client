@@ -19,7 +19,7 @@ const AddUserIcon = styled.span({
 
 const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
 
-    const { user, selectedOwner, groupMembersName } = useData();
+    const { user, selectedOwner, setSelectedOwner, groupMembersName } = useData();
 
     const navigate = useNavigate()
 
@@ -48,6 +48,11 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
         deleteGroup(selectedOwner.owner_type_id);
         handleClose();
         navigate(`/dashboard?owner_type=1`)
+        setSelectedOwner({
+            owner_type: 1,
+            owner_type_id: null,
+            name: null
+        })
     }
 
     return (
