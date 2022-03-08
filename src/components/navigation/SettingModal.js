@@ -83,7 +83,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
                                     setShowAlert={setShowAlert}
                                 />
                             }
-                            {selectedOwner && selectedOwner.owner_type === 0
+                            {selectedOwner.owner_type === 0
                                 ?
                                 <>
                                     {selectedOwner.owner_id === user.id &&

@@ -6,6 +6,7 @@ import SidebarMobile from "./sidebar/SidebarMobile";
 import GroupModal from "./GroupModal";
 import List from "./list/List";
 import { useData } from "../DataContext";
+import { useNavigate } from "react-router-dom";
 
 const DashboardContainer = styled.div({
     width: '100%',
@@ -27,6 +28,7 @@ const DashboardBody = styled.div({
 const Dashboard = ({ setAuth }) => {
 
     const { groups, setGroups } = useData();
+    const navigate = useNavigate();
 
     const [groupName, setGroupName] = useState();
     const [show, setShow] = useState(false);
@@ -61,6 +63,7 @@ const Dashboard = ({ setAuth }) => {
         tokensToRemove.forEach(token =>
             localStorage.removeItem(token))
         setAuth(false);
+        navigate('/login');
         toast.success("Logout successfully")
     };
 

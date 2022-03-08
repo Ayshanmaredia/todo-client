@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input } from '../../styles';
+import { blue } from '../../colors';
 
 const Search = styled.div({
     display: 'inline-flex',
@@ -15,7 +16,8 @@ const SearchButton = styled.button({
     backgroundColor: 'transparent',
     borderRadius: '4px',
     ":hover": {
-        backgroundColor: '#ececef'
+        backgroundColor: blue,
+        color: "#fff"
     },
     "@media (max-width: 768px)": {
         display: 'none'

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { blue } from "./colors"
 
 export const SideBarItem = styled.li({
     padding: '7px 15px',
@@ -8,7 +9,8 @@ export const SideBarItem = styled.li({
     cursor: 'pointer',
     borderRadius: '5px',
     ":hover": {
-        backgroundColor: '#ECECEF'
+        backgroundColor: blue,
+        color: "#fff"
     }
 });
 
@@ -51,5 +53,34 @@ export const MembersName = styled.li({
 
 export const CustomButtonDiv = styled.div({
     margin: '5px',
+    display: 'inline-flex',
+});
+
+export const ButtonDanger = styled.button({
     display: 'inline-block',
+    width: '100%',
+    backgroundColor: '#d35400',
+    color: '#fff',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    padding: '7px 12px',
+    border: '1px solid transparent',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    ":hover": {
+        backgroundColor: '#c0392b',
+    }
+});
+
+export const ButtonPrimary = styled.button({
+    display: 'inline-block',
+    width: '100%',
+    backgroundColor: blue,
+    color: '#fff',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    padding: '7px 12px',
+    border: '1px solid transparent',
+    borderRadius: '4px',
+    cursor: 'pointer'
 });

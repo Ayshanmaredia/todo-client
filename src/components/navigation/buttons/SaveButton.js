@@ -1,13 +1,12 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-import { CustomButtonDiv } from "../../../styles";
+import { CustomButtonDiv, ButtonPrimary } from "../../../styles";
 
 const SaveButton = ({ onUpdateClick }) => {
     return (
         <CustomButtonDiv>
-            <Button variant="primary" onClick={onUpdateClick}>
+            <ButtonPrimary onClick={onUpdateClick}>
                 Save Changes
-            </Button>
+            </ButtonPrimary>
         </CustomButtonDiv>
     )
 }

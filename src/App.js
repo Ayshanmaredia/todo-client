@@ -35,7 +35,6 @@ function App() {
 
   async function isAuth() {
     try {
-
       const response = await fetch(process.env.REACT_APP_HOST_URL + "/auth/is-verify", {
         method: "GET",
         headers: { token: localStorage.token }

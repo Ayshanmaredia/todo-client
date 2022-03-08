@@ -7,7 +7,8 @@ import { useData } from "../../DataContext";
 import NavBar from "../navigation/NavBar";
 import SearchBox from "../navigation/SearchBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import { blue } from "../../colors";
 
 const ListContainer = styled.div({
     display: 'flex',
@@ -38,9 +39,10 @@ const AddButton = styled.button({
     width: '100%',
     border: '1px solid gray',
     borderRadius: '4px',
-    transition: '0.3s all',
+    transition: '0.2s all',
     ":hover": {
-        backgroundColor: "#a69577"
+        backgroundColor: blue,
+        color: "#fff"
     }
 });
 
@@ -60,7 +62,7 @@ const List = () => {
 
     const handleShow = () => setShow(true);
 
-    const { searchValue, setSearchValue } = useData();
+    const { searchValue, setSearchValue, setSelectedOwner } = useData();
 
     const location = useLocation().search;
 
@@ -72,7 +74,7 @@ const List = () => {
     }
 
     useEffect(() => {
-        getList(params.get('owner_type'), params.get('owner_type_id'));
+        getList(parseInt(params.get('owner_type')), parseInt(params.get('owner_type_id')));
     }, [location]);
 
     useEffect(() => {
@@ -155,7 +157,7 @@ const List = () => {
         const list = lists.find(listItem => listItem.id === id);
 
         try {
-            const body = { "name": list.name, "owner_type": params.get('owner_type'), "owner_type_id": params.get('owner_type_id'), "description": null, "status": 0 }
+            const body = { "name": list.name, "owner_type": parseInt(params.get('owner_type')), "owner_type_id": parseInt(params.get('owner_type_id')), "description": null, "status": 0 }
 
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/create-list", {
                 method: "POST",

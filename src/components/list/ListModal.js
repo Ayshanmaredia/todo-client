@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 import { Input } from "../../styles";
+import SaveButton from "../navigation/buttons/SaveButton";
+import DeleteButton from "../navigation/buttons/DeleteButton";
 import AlertMessage from "../AlertMessage";
 
 const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList }) => {
@@ -71,12 +73,12 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
                 }
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={onDeleteClick}>
-                    Delete
-                </Button>
-                <Button variant="primary" onClick={onUpdateClick}>
-                    Update
-                </Button>
+                <DeleteButton
+                    onDeleteClick={onDeleteClick}
+                />
+                <SaveButton
+                    onUpdateClick={onUpdateClick}
+                />
             </Modal.Footer>
         </Modal>
     )

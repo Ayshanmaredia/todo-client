@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useData } from "../../DataContext";
 import GroupItem from "./GroupItem";
 import IndividualItem from "./IndividualItem";
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ButtonDanger } from "../../styles";
 
 const SidebarContainer = styled.div({
     height: '100vh',
@@ -101,17 +101,10 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
     }, []);
 
     const setOwner = (groups) => {
-        const owner_type = params.get('owner_type');
-        const owner_type_id = params.get('owner_type_id');
+        const owner_type = parseInt(params.get('owner_type'));
+        const owner_type_id = parseInt(params.get('owner_type_id'));
 
-        if (owner_type === null) {
-            navigate(`/dashboard?owner_type=1`)
-            setSelectedOwner({
-                owner_type: 1,
-                owner_type_id: null,
-                name: null
-            })
-        } else if (owner_type === 0 && owner_type_id === null) {
+        if (owner_type_id === null || owner_type === 1) {
             navigate(`/dashboard?owner_type=1`)
             setSelectedOwner({
                 owner_type: 1,
@@ -121,13 +114,13 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
         } else {
             navigate(`/dashboard?owner_type=${owner_type}&owner_type_id=${owner_type_id}`)
             setSelectedOwner({
-                owner_type: parseInt(owner_type),
-                owner_type_id: parseInt(owner_type_id),
-                name: groups.find((groupItem) => groupItem.group_id === parseInt(owner_type_id)).name
+                owner_type: owner_type,
+                owner_type_id: owner_type_id,
+                name: groups.find((groupItem) => groupItem.group_id === owner_type_id).name,
+                owner_id: groups.find((groupItem) => groupItem.group_id === owner_type_id).owner_id
             })
         }
     }
-
 
     return (
         <SidebarContainer>
@@ -159,7 +152,7 @@ function Sidebar({ groups, setGroups, handleShow, logout }) {
                 </GroupList>
             </SideBarBody>
             <SideBarFooter>
-                <Button className="w-100" variant="danger" onClick={e => logout(e)}>Logout</Button>
+                <ButtonDanger onClick={e => logout(e)}>Logout</ButtonDanger>
             </SideBarFooter>
         </SidebarContainer>
     )

@@ -1,13 +1,12 @@
 import React from "react"
-import { Button } from "react-bootstrap";
-import { CustomButtonDiv } from "../../../styles";
+import { CustomButtonDiv, ButtonDanger } from "../../../styles";
 
 const DeleteButton = ({ onDeleteClick }) => {
     return (
         <CustomButtonDiv>
-            <Button variant="danger" onClick={onDeleteClick}>
+            <ButtonDanger onClick={onDeleteClick}>
                 Delete
-            </Button>
+            </ButtonDanger>
         </CustomButtonDiv>
     )
 }

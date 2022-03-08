@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { SideBarItem } from '../../styles';
+import { blue } from "../../colors";
 
 
 const ListItem = styled(SideBarItem)({
@@ -13,8 +14,8 @@ function IndividualItem({ onNameClick, selectedOwner, owner_type }) {
 
     return (
         <ListItem
-            color={selectedOwner && selectedOwner.owner_type === owner_type ? "rgba(0, 0, 0, 0.6)" : "#000"} 
-            backgroundColor = {selectedOwner && selectedOwner.owner_type === owner_type ? "#ececef" : "transparent"}
+            color={selectedOwner && selectedOwner.owner_type === owner_type ? "#fff" : "#000"} 
+            backgroundColor = {selectedOwner && selectedOwner.owner_type === owner_type ? blue : "transparent"}
             onClick={onNameClick}>
             My list
         </ListItem>

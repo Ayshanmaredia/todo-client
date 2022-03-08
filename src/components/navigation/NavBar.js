@@ -7,6 +7,7 @@ import SettingModal from "./SettingModal";
 import SearchBox from "./SearchBox";
 import { BurgerMenu } from '../../styles';
 import { toast } from "react-toastify";
+import { blue } from "../../colors"; 
 
 const NavbarContainer = styled(Navbar)({
     width: '100%',
@@ -37,7 +38,7 @@ const SettingIcon = styled.span({
     cursor: 'pointer',
     transition: '0.2s',
     ":hover": {
-        color: '#a69577',
+        color: blue,
         transform: 'rotate(90deg)'
     }
 });
