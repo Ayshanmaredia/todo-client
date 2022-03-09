@@ -12,7 +12,7 @@ export const DataProvider = ({ children }) => {
     const [user, setUser] = useState("");
     const [members, setMembers] = useState([]);
     const [selectedOwner, setSelectedOwner] = useState();
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [searchValue, setSearchValue] = useState();
 
     const toggleSidebarMobile = () => {
