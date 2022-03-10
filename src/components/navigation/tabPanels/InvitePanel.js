@@ -53,6 +53,8 @@ const InvitePanel = () => {
                 body: JSON.stringify(body)
             });
 
+            setEmail("");
+
             if (response.status === 401) {
                 alertMessage(await response.text());
                 return;
@@ -89,6 +91,7 @@ const InvitePanel = () => {
                 <form className="d-flex w-100" onSubmit={createInvite}>
                     <Input
                         type="email"
+                        value={email}
                         placeholder="Enter email id"
                         className="w-75"
                         onChange={(e) => setEmail(e.target.value)}

@@ -92,7 +92,7 @@ function SidebarMobile({ groups, setGroups, handleShow, logout }) {
         navigate(`/dashboard?owner_type=0&owner_type_id=${group.group_id}`)
         setSelectedOwner({
             owner_type: 0,
-            owner_type_id: group.group_id,
+            owner_type_id: group.id,
             name: group.name,
             owner_id: group.owner_id
         })

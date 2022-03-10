@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setAuth }) => {
+const Login = ({ isAuth }) => {
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -13,6 +13,17 @@ const Login = ({ setAuth }) => {
     const { email, password } = inputs;
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkIsAuth = async () => {
+            const isAutheticated = await isAuth();
+            if (isAutheticated) {
+                navigate('/dashboard?owner_type=1');
+            }
+        }
+        checkIsAuth();
+    }, [])
+
 
     const onChange = (e) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -35,10 +46,8 @@ const Login = ({ setAuth }) => {
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token);
                 navigate(`/dashboard?owner_type=1`)
-                setAuth(true);
                 toast.success("Login successfully");
             } else {
-                setAuth(false);
                 toast.error(parseRes.error);
             }
 

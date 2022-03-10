@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Sidebar from "./sidebar/Sidebar";
@@ -25,7 +25,7 @@ const DashboardBody = styled.div({
     }
 });
 
-const Dashboard = ({ setAuth }) => {
+const Dashboard = ({ isAuth }) => {
 
     const { groups, setGroups } = useData();
     const navigate = useNavigate();
@@ -34,6 +34,16 @@ const Dashboard = ({ setAuth }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    useEffect(() => {
+        const checkIsAuth = async () => {
+            const isAutheticated = await isAuth();
+            if (!isAutheticated) {
+                navigate('/login');
+            }
+        }
+        checkIsAuth();
+    }, [])
 
     async function saveGroup() {
         try {
@@ -61,8 +71,7 @@ const Dashboard = ({ setAuth }) => {
     const logout = (e) => {
         e.preventDefault();
         tokensToRemove.forEach(token =>
-            localStorage.removeItem(token))
-        setAuth(false);
+            localStorage.removeItem(token));
         navigate('/login');
         toast.success("Logout successfully")
     };

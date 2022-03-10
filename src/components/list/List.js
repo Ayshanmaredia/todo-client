@@ -62,7 +62,7 @@ const List = () => {
 
     const handleShow = () => setShow(true);
 
-    const { searchValue, setSearchValue, setSelectedOwner } = useData();
+    const { searchValue, setSearchValue } = useData();
 
     const location = useLocation().search;
 

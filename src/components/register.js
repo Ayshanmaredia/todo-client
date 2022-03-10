@@ -1,20 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useData } from "../DataContext";
 
-const Register = ({ setAuth }) => {
+const Register = ({ isAuth }) => {
 
     const [inputs, setInputs] = useState({
         email: "",
         password: "",
         name: ""
     });
+    const { getInviteDetails } = useData();
+    const navigate = useNavigate();
 
     const { email, password, name } = inputs;
+
+    useEffect(() => {
+        const checkIsAuth = async () => {
+            const isAutheticated = await isAuth();
+            if (isAutheticated) {
+                navigate('/login');
+            }
+        }
+        checkIsAuth();
+    }, [])
 
     const onChange = (e) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value });
     };
+
+    async function processInviteToken(inviteToken) {
+
+        // 1. Call invite api and get dcrypted token 
+        const response = await getInviteDetails(inviteToken);
+
+        const parseRes = await response.json();
+
+        // 2. Update group_user_mapping
+        await updateGroupUserMapping(parseRes.group_id);
+
+        // 3. update invite status in invites table
+        await updateInviteStatus();
+    }
+
+    const updateGroupUserMapping = async (group_id) => {
+        try {
+
+            const body = { "group_id": group_id }
+
+            await fetch(process.env.REACT_APP_HOST_URL + "/group/group-user-map", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", token: localStorage.token },
+                body: JSON.stringify(body)
+            })
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    const updateInviteStatus = async () => {
+        try {
+
+            await fetch(process.env.REACT_APP_HOST_URL + "/invite/update-inviteStatus", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", token: localStorage.token, invitetoken: localStorage.invitetoken }
+            })
+
+            localStorage.removeItem("invitetoken")
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 
     const onSubmitForm = async (e) => {
         e.preventDefault();
@@ -33,10 +92,13 @@ const Register = ({ setAuth }) => {
 
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token);
-                setAuth(true);
+                const inviteToken = localStorage.getItem("invitetoken");
+                if (inviteToken) {
+                    await processInviteToken(inviteToken);
+                }
+                navigate("/dashboard?owner_type=1");
                 toast.success("Register successfully");
             } else {
-                setAuth(false);
                 toast.error(parseRes.error);
             }
 
