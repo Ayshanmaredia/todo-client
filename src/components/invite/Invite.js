@@ -28,6 +28,10 @@ const Invite = () => {
             navigate("/login");
         }
     }
+    return (
+        <>
+        </>
+    )
 }
 
 export default Invite

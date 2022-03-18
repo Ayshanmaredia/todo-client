@@ -62,7 +62,7 @@ const List = () => {
 
     const handleShow = () => setShow(true);
 
-    const { searchValue, setSearchValue } = useData();
+    const { searchValue, setSearchValue, user } = useData();
 
     const location = useLocation().search;
 
@@ -74,8 +74,10 @@ const List = () => {
     }
 
     useEffect(() => {
-        getList(parseInt(params.get('owner_type')), parseInt(params.get('owner_type_id')));
-    }, [location]);
+        if (user) {
+            getList(parseInt(params.get('owner_type')), parseInt(params.get('owner_type_id')));
+        }
+    }, [location, user]);
 
     useEffect(() => {
         if (lists.length > 0) {
@@ -184,6 +186,10 @@ const List = () => {
     }
 
     const getList = async (owner_type, owner_type_id) => {
+
+        if (isNaN(owner_type_id)) {
+            owner_type_id = user.id;
+        }
         try {
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/get-lists", {
                 method: "GET",
