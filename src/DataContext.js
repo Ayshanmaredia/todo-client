@@ -40,7 +40,7 @@ export const DataProvider = ({ children }) => {
         try {
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/member/get-members", {
                 method: "GET",
-                headers: { "group_id": selectedOwner.owner_type_id, token: localStorage.token }
+                headers: { "groupid": selectedOwner.owner_type_id, token: localStorage.token }
             });
 
             const parseRes = await response.json();

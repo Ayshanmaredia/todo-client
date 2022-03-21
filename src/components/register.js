@@ -47,7 +47,7 @@ const Register = ({ isAuth }) => {
     const updateGroupUserMapping = async (group_id) => {
         try {
 
-            const body = { "group_id": group_id }
+            const body = { "groupid": group_id }
 
             await fetch(process.env.REACT_APP_HOST_URL + "/group/group-user-map", {
                 method: "PUT",

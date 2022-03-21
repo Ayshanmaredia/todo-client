@@ -159,7 +159,7 @@ const List = () => {
         const list = lists.find(listItem => listItem.id === id);
 
         try {
-            const body = { "name": list.name, "owner_type": parseInt(params.get('owner_type')), "owner_type_id": parseInt(params.get('owner_type_id')), "description": null, "status": 0 }
+            const body = { "name": list.name, "ownertype": parseInt(params.get('owner_type')), "ownertypeid": parseInt(params.get('owner_type_id')), "description": null, "status": 0 }
 
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/create-list", {
                 method: "POST",
@@ -193,7 +193,7 @@ const List = () => {
         try {
             const response = await fetch(process.env.REACT_APP_HOST_URL + "/list/get-lists", {
                 method: "GET",
-                headers: { "owner_type": owner_type, "owner_type_id": owner_type_id, token: localStorage.token }
+                headers: { "ownertype": owner_type, "ownertypeid": owner_type_id, token: localStorage.token }
             });
 
             const parseRes = await response.json();
