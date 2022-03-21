@@ -34,6 +34,13 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
         handleClose();
     }
 
+    const onKeyPress = (e) => {
+        if (e.charCode === 13) {
+            e.preventDefault();
+            onUpdateClick();
+        }
+    }
+
     const onDeleteClick = () => {
         deleteList(selectedListItem.id);
         handleClose();
@@ -52,6 +59,7 @@ const ListModal = ({ show, handleClose, selectedListItem, updateList, deleteList
                             <Input
                                 type="text"
                                 placeholder="Update item name"
+                                onKeyPress={(e) => onKeyPress(e)}
                                 defaultValue={selectedListItem.name}
                                 onChange={(e) => setUpdatedItem({ ...updatedItem, name: e.target.value })} />
                         </Form.Group>

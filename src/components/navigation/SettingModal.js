@@ -44,6 +44,13 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
         handleClose();
     }
 
+    const onKeyPress = (e) => {
+        if (e.charCode === 13) {
+            e.preventDefault();
+            onUpdateClick();
+        }
+    }
+
     const onDeleteClick = () => {
         deleteGroup(selectedOwner.owner_type_id);
         handleClose();
@@ -79,6 +86,7 @@ const SettingModal = ({ show, handleClose, updateGroup, deleteGroup }) => {
                         </TabList>
                         <TabPanel>
                             <NamePanel
+                                onKeyPress={onKeyPress}
                                 tempName={tempName}
                                 setTempName={setTempName}
                             />
