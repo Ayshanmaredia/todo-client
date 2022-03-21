@@ -35,6 +35,9 @@ const Dashboard = ({ isAuth }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
+
     useEffect(() => {
         const checkIsAuth = async () => {
             const isAutheticated = await isAuth();
@@ -46,7 +49,16 @@ const Dashboard = ({ isAuth }) => {
     }, [])
 
     async function saveGroup() {
+
         try {
+            const emptyField = groupName.replace(/ /g, '').length
+
+            if (!groupName || emptyField === 0) {
+                setErrorMessage("Field cannot be empty");
+                setShowAlert(true);
+                setGroupName("");
+                return;
+            }
 
             const body = { name: groupName }
 
@@ -60,6 +72,7 @@ const Dashboard = ({ isAuth }) => {
 
             setGroups([...groups, parseRes]);
             setGroupName("");
+            handleClose();
 
         } catch (err) {
             console.error(err.message);
@@ -100,6 +113,10 @@ const Dashboard = ({ isAuth }) => {
                 handleClose={handleClose}
                 setGroupName={setGroupName}
                 saveGroup={saveGroup}
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+                errorMessage={errorMessage}
+                groupName={groupName}
             />
         </DashboardContainer>
     );
